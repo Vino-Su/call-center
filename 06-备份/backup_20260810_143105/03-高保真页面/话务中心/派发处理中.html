@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>话务中心 - 任务派发中</title>
+  <link rel="stylesheet" href="assets/common.css?v=20260808-ui-2">
+  <style>
+    body { min-height: 100vh; overflow: hidden; }
+    .allocating-page { position: relative; min-height: calc(100vh - 64px); display: grid; place-items: center; overflow: hidden; padding: 64px 24px 80px; background: #f6faff; }
+    .allocating-page::before { content: ""; position: absolute; top: -20vh; right: -5vw; width: 54vw; height: 90vh; background: linear-gradient(135deg, rgba(22,119,255,.10), rgba(22,119,255,0)); transform: rotate(44deg); }
+    .allocating-page::after { content: ""; position: absolute; bottom: -42vh; left: 22vw; width: 54vw; height: 100vh; border: 1px solid rgba(22,119,255,.13); transform: rotate(-42deg); }
+    .allocation-card { position: relative; z-index: 1; width: min(660px, calc(100vw - 48px)); min-height: 372px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 56px 48px; border-radius: 8px; background: rgba(255,255,255,.97); box-shadow: 0 6px 18px rgba(25, 84, 147, .10); }
+    .allocation-card::before { content: ""; position: absolute; inset: 0; border-radius: inherit; border: 1px solid rgba(0,0,0,.02); pointer-events: none; }
+    .assign-orb { position: relative; width: 84px; height: 84px; margin-bottom: 20px; border-radius: 50%; background: radial-gradient(circle at 38% 30%, #4d5968 0 10%, #1f2937 40%, #111827 72%); box-shadow: 0 12px 22px rgba(0,0,0,.16); animation: float 1.8s ease-in-out infinite; }
+    .assign-orb::before, .assign-orb::after { content: ""; position: absolute; top: 31px; width: 10px; height: 16px; border-radius: 8px; background: #fff; box-shadow: 0 0 12px rgba(255,255,255,.75); }
+    .assign-orb::before { left: 23px; }
+    .assign-orb::after { right: 23px; }
+    .scan-ring { position: absolute; width: 116px; height: 116px; border: 1px solid rgba(22,119,255,.28); border-radius: 50%; animation: ring 1.8s ease-out infinite; }
+    .scan-ring.two { animation-delay: .5s; }
+    .state-title { margin: 0 0 8px; color: #34455d; font-size: 20px; font-weight: 600; line-height: 30px; }
+    .state-desc { margin: 0 0 28px; color: var(--text-secondary); }
+    .event-line { display: flex; align-items: center; gap: 8px; margin-bottom: 28px; color: var(--text-tertiary); font-size: 12px; }
+    .event-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--primary); }
+    .return-link { text-decoration: none; }
+    .header-link { color: var(--text-secondary); text-decoration: none; }
+    .header-link:hover { color: var(--primary); }
+    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+    @keyframes ring { 0% { opacity: .75; transform: scale(.6); } 100% { opacity: 0; transform: scale(1.35); } }
+    @media (max-height: 760px) { .allocation-card { min-height: 320px; padding: 36px 48px; } .assign-orb { transform: scale(.85); margin-bottom: 8px; } }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand"><span class="brand-mark">C</span><span>酷哇话务中心</span></div>
+    <div class="header-actions">
+      <div class="switch-line"><span>事件接收</span><button class="switch is-on" type="button" aria-label="事件接收已开启" aria-pressed="true" data-receiving="true"></button></div>
+      <span>09:39:00</span>
+      <span>2026/08/07&nbsp;&nbsp;星期五</span>
+      <a class="header-link" href="话务中心工作台.html">返回工作台</a>
+    </div>
+  </header>
+  <main class="allocating-page">
+    <section class="allocation-card" aria-live="polite">
+      <i class="scan-ring" aria-hidden="true"></i><i class="scan-ring two" aria-hidden="true"></i>
+      <div class="assign-orb" aria-hidden="true"></div>
+      <h1 class="state-title">任务派发中，请稍候</h1>
+      <p class="state-desc">正在同步处置人员与动态任务池</p>
+      <div class="event-line"><i class="event-dot"></i><span>事件编号：EVT-20260807-00138</span></div>
+      <a class="btn btn-primary return-link" href="话务中心工作台.html">返回工作台</a>
+    </section>
+  </main>
+</body>
+</html>
