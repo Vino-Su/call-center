@@ -1,0 +1,16 @@
+{
+  "url": "http://127.0.0.1:61722/话务中心工作台.html",
+  "verdict": "ok",
+  "title": "话务中心工作台",
+  "htmlLen": 192438,
+  "bodyChildren": 10,
+  "selector": ".map-tools",
+  "selectorFound": true,
+  "selectorCount": 1,
+  "pageTextPreview": "环\n酷哇话务中心\n09:39:00\n2026/08/07  星期五\n后台管理\n返回首页\n待处理\n(10)\n处理中\n(1)\n挂起中\n(1)\n已完成\n(1)\n×\n近3天\n近7天\n全部\n上海市远香湖项目\n待处理\n沪A·D1205\n巡查员张三\n08-07 09:18\n远香湖公园东门\n上海市远香湖项目\n待处理\n沪A·A9316\n巡查员李娜\n08-07 09:25\n远香湖环湖北路\n上海市远香湖项目\n待处理\n沪",
+  "errorCount": 0,
+  "errors": [],
+  "domFile": "D:\\claude_code_coding\\话务中心\\07-bugs\\selftest\\dom.html",
+  "resultFile": "D:\\claude_code_coding\\话务中心\\07-bugs\\selftest\\result.json",
+  "shotFile": "D:\\claude_code_coding\\话务中心\\07-bugs\\selftest\\shot.png"
+}

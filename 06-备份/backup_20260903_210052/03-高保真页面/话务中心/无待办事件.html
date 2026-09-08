@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>话务中心 - 暂无待办事件</title>
+  <link rel="stylesheet" href="assets/common.css?v=20260808-ui-2">
+  <style>
+    body { min-height: 100vh; overflow: hidden; }
+    .empty-page { position: relative; min-height: calc(100vh - 64px); overflow: hidden; display: grid; place-items: center; padding: 56px 24px 72px; background: #f5f9fd; }
+    .empty-page::before { content: ""; position: absolute; top: -34vh; right: -12vw; width: 68vw; height: 118vh; transform: rotate(-38deg); background: linear-gradient(135deg, rgba(230,244,255,.55), rgba(255,255,255,0)); pointer-events: none; }
+    .empty-page::after { content: ""; position: absolute; right: 18vw; bottom: -33vh; width: 56vw; height: 92vh; border: 1px solid rgba(22,119,255,.12); transform: rotate(-43deg); pointer-events: none; }
+    .empty-state { position: relative; z-index: 1; width: min(804px, calc(100vw - 48px)); min-height: 458px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 64px 40px; border: 2px solid #1677ff; border-radius: 8px; background: rgba(255,255,255,.96); box-shadow: 0 14px 34px rgba(34, 94, 164, .08); }
+    .scene { position: relative; width: 188px; height: 124px; margin-bottom: 22px; }
+    .scene .halo { position: absolute; left: 18px; right: 18px; bottom: 0; height: 50px; border-radius: 50%; background: linear-gradient(180deg, #f2f7ff, #e8f2ff); }
+    .scene .road { position: absolute; left: 30px; right: 30px; bottom: 21px; height: 6px; border-radius: 12px; background: #bddbff; }
+    .scene .road::before, .scene .road::after { content: ""; position: absolute; top: -15px; width: 3px; height: 31px; background: #d5e8ff; border-radius: 3px; }
+    .scene .road::before { left: 22px; transform: rotate(36deg); }
+    .scene .road::after { right: 22px; transform: rotate(-36deg); }
+    .scene .van { position: absolute; left: 57px; top: 26px; width: 74px; height: 51px; border-radius: 7px 9px 6px 6px; background: #c4d7ef; box-shadow: inset 0 -9px 0 #a9c4e6; }
+    .scene .van::before { content: ""; position: absolute; top: -15px; right: 5px; width: 37px; height: 25px; border-radius: 6px 7px 0 0; background: #d7e5f5; }
+    .scene .van::after { content: ""; position: absolute; left: 9px; bottom: -8px; width: 15px; height: 15px; border: 4px solid #91abc8; border-radius: 50%; box-shadow: 37px 0 0 -4px #91abc8, 37px 0 0 0 #91abc8; background: #f8fbff; }
+    .scene .leaf { position: absolute; width: 20px; height: 34px; border-radius: 20px 2px; background: #d9e7f7; }
+    .scene .leaf.one { left: 37px; top: 42px; transform: rotate(-38deg); }
+    .scene .leaf.two { left: 25px; top: 55px; transform: rotate(-63deg); }
+    .scene .leaf.three { right: 29px; top: 42px; transform: rotate(33deg); }
+    .state-title { margin: 0 0 8px; color: #34455d; font-size: 24px; font-weight: 600; line-height: 34px; }
+    .state-desc { min-height: 22px; margin: 0 0 26px; color: var(--text-secondary); font-size: 14px; text-align: center; }
+    .receive-control { display: flex; align-items: center; gap: 12px; padding: 8px 16px; border-radius: 6px; background: #fafafa; color: var(--text-secondary); }
+    .receive-control .switch { transform: scale(1.08); transform-origin: center; }
+    .receiving-note { margin-top: 18px; color: #52c41a; font-size: 12px; opacity: 0; transition: opacity .2s ease; }
+    .receiving-note.is-visible { opacity: 1; }
+    .header-link { color: var(--text-secondary); text-decoration: none; }
+    .header-link:hover { color: var(--primary); }
+    @media (max-height: 760px) { .empty-state { min-height: 392px; padding: 42px 40px; } .scene { transform: scale(.88); margin-bottom: 10px; } }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand"><span class="brand-mark">C</span><span>酷哇话务中心</span></div>
+    <div class="header-actions">
+      <div class="switch-line"><span>事件接收</span><button id="receiveToggle" class="switch" type="button" aria-label="切换事件接收" aria-pressed="false" data-receiving="false"></button></div>
+      <span>09:39:00</span>
+      <span>2026/08/07&nbsp;&nbsp;星期五</span>
+      <a class="header-link" href="话务中心工作台.html">返回工作台</a>
+    </div>
+  </header>
+  <main class="empty-page">
+    <section class="empty-state" aria-live="polite">
+      <div class="scene" aria-hidden="true"><i class="halo"></i><i class="road"></i><i class="leaf one"></i><i class="leaf two"></i><i class="leaf three"></i><i class="van"></i></div>
+      <h1 id="emptyTitle" class="state-title">尚未开启事件接收</h1>
+      <p id="emptyDescription" class="state-desc">开启后，系统将为你接收待判别事件</p>
+      <div class="receive-control"><span id="receiveLabel">事件接收已关闭</span><button id="centerReceiveToggle" class="switch" type="button" aria-label="切换事件接收" aria-pressed="false" data-receiving="false"></button></div>
+      <div id="receivingNote" class="receiving-note">正在监听新上报事件</div>
+    </section>
+  </main>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="assets/common.js"></script>
+  <script>
+    (function () {
+      var headerToggle = document.getElementById('receiveToggle');
+      var centerToggle = document.getElementById('centerReceiveToggle');
+      var title = document.getElementById('emptyTitle');
+      var description = document.getElementById('emptyDescription');
+      var label = document.getElementById('receiveLabel');
+      var note = document.getElementById('receivingNote');
+      function update(on) {
+        [headerToggle, centerToggle].forEach(function (button) {
+          button.classList.toggle('is-on', on);
+          button.dataset.receiving = String(on);
+          button.setAttribute('aria-pressed', String(on));
+        });
+        title.textContent = on ? '暂无待处理事件' : '尚未开启事件接收';
+        description.textContent = on ? '当前没有需要你判别或分配的事件' : '开启后，系统将为你接收待判别事件';
+        label.textContent = on ? '事件接收中' : '事件接收已关闭';
+        note.classList.toggle('is-visible', on);
+      }
+      [headerToggle, centerToggle].forEach(function (button) {
+        button.addEventListener('click', function () {
+          var next = button.dataset.receiving !== 'true';
+          update(next);
+          window.CallCenterUI.toast(next ? '已开启事件接收' : '已暂停事件接收', next ? 'success' : 'error');
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

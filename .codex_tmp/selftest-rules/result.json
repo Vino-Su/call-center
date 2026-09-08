@@ -1,0 +1,16 @@
+{
+  "url": "http://127.0.0.1:59730/高优规则配置.html?embed=1",
+  "verdict": "ok",
+  "title": "高优规则配置 - 话务中心后台",
+  "htmlLen": 13440,
+  "bodyChildren": 5,
+  "selector": ".rule-grid",
+  "selectorFound": true,
+  "selectorCount": 1,
+  "pageTextPreview": "高优规则配置\n配置变更在保存后生效\n事件上报时，系统按以下两个维度自动判定高优先级——命中重点项目或命中重点问题类型，任一命中即视为高优先级。命中高优的事件在待处理、处理中、挂起中队列中优先排序，未命中的事件均为普通优先级；存量事件将在进入工作台时按当前配置自动重算。\n重点项目\n已选 1 项\n上海市远香湖项目\n重点问题类型\n已选 2 项\n垃圾满溢\n道路积水\n编辑配置",
+  "errorCount": 0,
+  "errors": [],
+  "domFile": "D:\\claude_code_coding\\话务中心\\.codex_tmp\\selftest-rules\\dom.html",
+  "resultFile": "D:\\claude_code_coding\\话务中心\\.codex_tmp\\selftest-rules\\result.json",
+  "shotFile": "D:\\claude_code_coding\\话务中心\\.codex_tmp\\selftest-rules\\shot.png"
+}

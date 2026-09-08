@@ -98,7 +98,12 @@
     .timeline-detail { min-width: 0; padding-left: 4px; font-size: 13px; line-height: 18px; }
     .timeline-operator { display: block; color: var(--text); font-weight: 500; }
     .timeline-action { display: block; margin-top: 2px; color: var(--text-secondary); }
+@@
     @media (max-width: 1366px) { .main-content { padding-right: 20px; padding-left: 20px; } .filter-panel { padding-right: 20px; padding-left: 20px; } .filter-grid { column-gap: 16px; } }
+    body.is-embedded { min-width: 0; overflow: hidden; background: #f0f2f5; }
+    body.is-embedded > .app-header, body.is-embedded .side-nav { display: none; }
+    body.is-embedded .app-shell { min-height: 100vh; height: 100vh; }
+    body.is-embedded .main-content { padding: 20px; }
   </style>
 </head>
 <body>
@@ -168,6 +173,7 @@
   <script src="assets/common.js"></script>
   <script>
     (function () {
+      if (new URLSearchParams(window.location.search).get('embed') === '1') document.body.classList.add('is-embedded');
       var records = [
         { id: 'ER-20260810-016', project: '滨江区市容巡查项目', plate: '浙A·P3268', inspector: '张晨', time: '2026-08-10 09:18:24', status: '处理中', operator: '王敏', discovery: '车载监控采样', location: '滨江区江南大道', address: '江南大道与西兴路交叉口东侧 80 米', task: 'T-20260810-036', nature: '有效事件', type: '道路遗撒', description: '机动车道边缘发现零散建筑垃圾，需及时清扫。', assignee: '陈明', vehicle: '浙A·S8012（洗扫车）', dispatchTime: '2026-08-10 09:24:10', logs: [['09:18', '张晨', '事件上报', '采样图片已入库'], ['09:20', '王敏', '接单', '开始核实事件'], ['09:24', '王敏', '派发任务', '已派发给陈明']] },
         { id: 'ER-20260810-015', project: '城西区道路保洁项目', plate: '浙A·M7016', inspector: '李航', time: '2026-08-10 08:42:06', status: '待处理', operator: '刘佳', discovery: '车载监控采样', location: '城西区文一西路', address: '文一西路 921 号公交站南侧', task: '--', nature: '待判别', type: '--', description: '--', assignee: '--', vehicle: '--', dispatchTime: '--', logs: [['08:42', '李航', '事件上报', '采样图片已入库']] },

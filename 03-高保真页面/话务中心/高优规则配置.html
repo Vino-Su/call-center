@@ -52,6 +52,10 @@
     .panel-body { transition: opacity .18s ease; }
     .panel-body.is-switching { opacity: 0; }
     @media (max-width: 1100px) { .rule-grid { grid-template-columns: 1fr; } .rule-list--types { grid-template-columns: repeat(3, 1fr); } }
+    body.is-embedded { min-width: 0; overflow: hidden; background: #f0f2f5; }
+    body.is-embedded > .app-header, body.is-embedded .side-nav { display: none; }
+    body.is-embedded .app-shell { min-height: 100vh; height: 100vh; }
+    body.is-embedded .main-content { padding: 20px; }
   </style>
 </head>
 <body>
@@ -110,6 +114,7 @@
   <script src="assets/common.js"></script>
   <script>
     (function () {
+      if (new URLSearchParams(window.location.search).get('embed') === '1') document.body.classList.add('is-embedded');
       var KEY = 'cc_high_priority_rules';
       var DEFAULT_RULES = { projects: ['上海市远香湖项目'], types: ['垃圾满溢', '道路积水'] };
       var ALL_PROJECTS = ['上海市远香湖项目', '嘉定新城保洁项目', '上海汽车城项目'];
