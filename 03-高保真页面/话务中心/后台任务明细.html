@@ -129,8 +129,8 @@
           <div id="filterGrid" class="filter-grid">
           <div class="filter-item filter-item--project"><label for="projectFilter">项目名称</label><select id="projectFilter" class="select"><option value="">全部</option><option>滨江区市容巡查项目</option><option>城西区道路保洁项目</option><option>东湖高新区环卫项目</option></select></div>
           <div class="filter-item"><label for="plateFilter">车牌号</label><input id="plateFilter" class="input" type="search" placeholder="请输入车牌号"></div>
-          <div class="filter-item filter-item--inspector"><label for="inspectorFilter">关联巡查员</label><select id="inspectorFilter" class="select"><option value="">全部</option><option>张晨</option><option>李航</option><option>周凯</option><option>陈晓</option><option>赵磊</option></select></div>
-          <div class="filter-item"><label for="operatorFilter">话务员</label><select id="operatorFilter" class="select"><option value="">全部</option><option>王敏</option><option>刘佳</option><option>陈思</option><option>黄蓉</option></select></div>
+          <div class="filter-item filter-item--inspector"><label for="inspectorFilter">关联巡查员</label><input id="inspectorFilter" class="input" type="search" placeholder="请输入巡查员姓名"></div>
+          <div class="filter-item"><label for="operatorFilter">品质运营专员</label><select id="operatorFilter" class="select"><option value="">全部</option><option>王敏</option><option>刘佳</option><option>陈思</option><option>黄蓉</option></select></div>
           <div class="filter-item"><label for="occurredStart">发生时间</label><div class="time-range"><input id="occurredStart" class="input" type="datetime-local" aria-label="发生开始时间"><span class="range-divider">至</span><input id="occurredEnd" class="input" type="datetime-local" aria-label="发生结束时间"></div></div>
           <div class="filter-item"><label for="acceptedStart">接单时间</label><div class="time-range"><input id="acceptedStart" class="input" type="datetime-local" aria-label="接单开始时间"><span class="range-divider">至</span><input id="acceptedEnd" class="input" type="datetime-local" aria-label="接单结束时间"></div></div>
           <div class="filter-item filter-item--status"><label for="statusFilter">处理状态</label><select id="statusFilter" class="select"><option value="">全部</option><option>待处理</option><option>处理中</option><option>挂起中</option><option>已完成</option><option>已关闭</option></select></div>
@@ -144,7 +144,7 @@
           <table aria-label="事件记录明细表">
             <thead><tr>
               <th class="check-cell"><input id="selectAll" type="checkbox" aria-label="选择当前页全部记录"></th>
-              <th class="project-cell">项目名称</th><th class="plate-cell">车牌号</th><th class="person-cell">关联巡查员</th><th class="time-cell">发生时间</th><th class="time-cell">接单时间</th><th class="status-cell">处理状态</th><th class="operator-cell">话务员</th><th class="operation-cell">操作</th>
+              <th class="project-cell">项目名称</th><th class="plate-cell">车牌号</th><th class="person-cell">关联巡查员</th><th class="time-cell">发生时间</th><th class="time-cell">接单时间</th><th class="status-cell">处理状态</th><th class="operator-cell">品质运营专员</th><th class="operation-cell">操作</th>
             </tr></thead>
             <tbody id="recordRows"></tbody>
           </table>
@@ -243,7 +243,7 @@
       function applyFilters() {
         var project = document.getElementById('projectFilter').value;
         var plate = document.getElementById('plateFilter').value.trim().toUpperCase();
-        var inspector = document.getElementById('inspectorFilter').value;
+        var inspector = document.getElementById('inspectorFilter').value.trim();
         var operator = document.getElementById('operatorFilter').value;
         var occurredStart = document.getElementById('occurredStart').value;
         var occurredEnd = document.getElementById('occurredEnd').value;
@@ -251,7 +251,7 @@
         var acceptedEnd = document.getElementById('acceptedEnd').value;
         var status = document.getElementById('statusFilter').value;
         filteredRecords = records.filter(function (record) {
-          return (!project || record.project === project) && (!plate || record.plate.toUpperCase().indexOf(plate) > -1) && (!inspector || record.inspector === inspector) && (!operator || record.operator === operator) && isWithinRange(record.time, occurredStart, occurredEnd) && isWithinRange(acceptedTime(record), acceptedStart, acceptedEnd) && (!status || record.status === status);
+          return (!project || record.project === project) && (!plate || record.plate.toUpperCase().indexOf(plate) > -1) && (!inspector || record.inspector.indexOf(inspector) > -1) && (!operator || record.operator === operator) && isWithinRange(record.time, occurredStart, occurredEnd) && isWithinRange(acceptedTime(record), acceptedStart, acceptedEnd) && (!status || record.status === status);
         });
         currentPage = 1;
         renderTable();
@@ -282,7 +282,7 @@
       function exportSelected() {
         var selected = records.filter(function (record) { return selectedIds.has(record.id); });
         if (!selected.length) return;
-        var header = ['记录编号', '项目名称', '车牌号', '关联巡查员', '发生时间', '接单时间', '处理状态', '话务员'];
+        var header = ['记录编号', '项目名称', '车牌号', '关联巡查员', '发生时间', '接单时间', '处理状态', '品质运营专员'];
         var csv = [header].concat(selected.map(function (record) { return [record.id, record.project, record.plate, record.inspector, record.time, acceptedTime(record) || '--', record.status, record.operator]; })).map(function (row) { return row.map(function (cell) { return '"' + String(cell).replace(/"/g, '""') + '"'; }).join(','); }).join('\r\n');
         var blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
         var link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = '事件记录明细_' + new Date().toISOString().slice(0, 10) + '.csv'; document.body.appendChild(link); link.click(); document.body.removeChild(link); URL.revokeObjectURL(link.href);
@@ -296,7 +296,7 @@
         this.setAttribute('aria-expanded', String(panel.classList.contains('is-expanded')));
         this.textContent = panel.classList.contains('is-expanded') ? '收起' : '展开更多';
       });
-      document.getElementById('plateFilter').addEventListener('keydown', function (event) { if (event.key === 'Enter') applyFilters(); });
+      ['plateFilter', 'inspectorFilter'].forEach(function (id) { document.getElementById(id).addEventListener('keydown', function (event) { if (event.key === 'Enter') applyFilters(); }); });
       document.getElementById('recordRows').addEventListener('change', function (event) { if (!event.target.matches('.record-check')) return; if (event.target.checked) selectedIds.add(event.target.dataset.id); else selectedIds.delete(event.target.dataset.id); updateSelection(); });
       document.getElementById('recordRows').addEventListener('click', function (event) { var button = event.target.closest('[data-view-id]'); if (button) showRecord(button.dataset.viewId); });
       document.getElementById('selectAll').addEventListener('change', function () { currentPageRecords().forEach(function (record) { if (this.checked) selectedIds.add(record.id); else selectedIds.delete(record.id); }, this); renderRows(); });

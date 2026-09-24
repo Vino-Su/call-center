@@ -1,0 +1,16 @@
+{
+  "url": "http://127.0.0.1:58880/话务中心工作台.html?embed=1",
+  "verdict": "ok",
+  "title": "话务中心工作台",
+  "htmlLen": 209312,
+  "bodyChildren": 11,
+  "selector": "#allocationPanel",
+  "selectorFound": true,
+  "selectorCount": 1,
+  "pageTextPreview": "待处理\n(10)\n处理中\n(1)\n挂起中\n(1)\n已完成\n(1)\n×\n近3天\n近7天\n全部\n上海市远香湖项目\n待处理\n沪A·D1205\n巡查员张三\n08-07 09:18\n远香湖公园东门\n上海市远香湖项目\n待处理\n沪A·A9316\n巡查员李娜\n08-07 09:25\n远香湖环湖北路\n上海市远香湖项目\n待处理\n沪A·B6821\n巡查员周敏\n08-07 09:42\n远香湖路南门入口\n上海市远香湖项目\n",
+  "errorCount": 0,
+  "errors": [],
+  "domFile": "D:\\claude_code_coding\\话务中心\\.codex_tmp\\selftest-dispatch\\dom.html",
+  "resultFile": "D:\\claude_code_coding\\话务中心\\.codex_tmp\\selftest-dispatch\\result.json",
+  "shotFile": "D:\\claude_code_coding\\话务中心\\.codex_tmp\\selftest-dispatch\\shot.png"
+}
