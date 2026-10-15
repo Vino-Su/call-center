@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>运营中心框架-框架层（导出用）</title>
+  <link rel="stylesheet" href="话务中心/assets/common.css">
+  <style>
+    :root { --shell-blue:#1677ff; --shell-ink:#24344d; --shell-muted:#66758a; --shell-line:#e8edf3; --shell-bg:#f4f7fb; --sidebar-w:204px; }
+    * { box-sizing:border-box; }
+    /* Axhub 导出用：固定 1830×900 画布，使 document 尺寸确定、抓取结果可预期 */
+    html,body { width:1830px; height:900px; margin:0; overflow:hidden; font-family:"PingFang SC","Microsoft YaHei",Arial,sans-serif; color:var(--shell-ink); background:var(--shell-bg); }
+    button,a { font:inherit; }
+    .topbar { height:64px; display:flex; align-items:center; border-bottom:1px solid var(--shell-line); background:#fff; }
+    .brand { display:flex; width:204px; height:100%; align-items:center; padding:0 16px; gap:10px; font-size:19px; font-weight:700; letter-spacing:0; white-space:nowrap; }
+    .brand-mark { display:grid; width:29px; height:29px; place-items:center; border-radius:50%; color:#fff; background:#19a4d8; font-size:15px; box-shadow:inset 0 -2px 0 rgba(0,0,0,.12); }
+    .product-nav { display:flex; height:100%; align-items:center; gap:3px; }
+    .product-link { display:inline-flex; height:42px; align-items:center; padding:0 17px; border-radius:5px; color:#334155; text-decoration:none; font-size:16px; white-space:nowrap; }
+    .product-link::before { content:""; width:13px; height:13px; margin-right:8px; border-radius:3px; background:#7b8797; opacity:.9; }
+    .product-link:hover { color:var(--shell-blue); background:#f5f9ff; }
+    .product-link.is-active { color:#fff; background:var(--shell-blue); box-shadow:0 3px 8px rgba(22,119,255,.18); }
+    .product-link.is-active::before { background:#fff; }
+    .topbar-spacer { flex:1; }
+    .project-select { display:flex; width:316px; height:34px; align-items:center; justify-content:space-between; margin-right:18px; padding:0 12px; border:1px solid #d9e1eb; border-radius:5px; color:#65758b; background:#fff; font-size:14px; white-space:nowrap; overflow:hidden; }
+    .project-select span:first-child { overflow:hidden; text-overflow:ellipsis; }
+    .project-select span:last-child { color:#98a5b5; font-size:12px; }
+    .top-action { width:35px; height:35px; margin-right:4px; border:0; border-radius:50%; color:#738196; background:transparent; font-size:18px; }
+    .top-action:hover { color:var(--shell-blue); background:#f0f6ff; }
+    .user-box { display:flex; align-items:center; gap:9px; margin:0 16px 0 8px; white-space:nowrap; }
+    .avatar { display:grid; width:32px; height:32px; place-items:center; border-radius:50%; color:#334155; background:#f1f4f8; font-size:14px; font-weight:600; }
+    .user-copy strong { display:block; color:#2d3a4e; font-size:14px; line-height:18px; }
+    .user-copy small { display:block; color:#9aa6b6; font-size:11px; line-height:14px; }
+    .user-caret { color:#8793a2; font-size:11px; }
+    .layout { display:flex; height:calc(100% - 64px); }
+    /* 侧栏关闭内部滚动，避免滚动条被 Axhub 当作图层抓取 */
+    .sidebar { width:var(--sidebar-w); flex:0 0 var(--sidebar-w); padding:10px 0; border-right:1px solid var(--shell-line); background:#fff; overflow:hidden; }
+    .side-group { margin-bottom:6px; }
+    .side-group-title { display:flex; height:42px; align-items:center; justify-content:space-between; padding:0 20px; color:#26384f; font-size:14px; font-weight:600; }
+    .side-group-title.is-standalone::after { display:none; }
+    .side-group-title span:first-child { display:flex; align-items:center; gap:10px; }
+    .side-group-title span:first-child::before { content:""; width:15px; height:15px; border:2px solid #6f7d8f; border-radius:3px; opacity:.9; }
+    .side-group-title::after { content:"⌃"; color:#66778b; font-size:14px; transform:translateY(2px); }
+    .side-link { display:flex; height:40px; align-items:center; margin:1px 4px; padding:0 30px; border-radius:7px; color:#394b61; text-decoration:none; font-size:14px; }
+    .side-link:hover { color:var(--shell-blue); background:#f3f8ff; }
+    .side-link.is-active { color:var(--shell-blue); background:#e8f2ff; font-weight:600; }
+    .side-link.is-active::before { content:""; width:3px; height:20px; margin-left:-10px; margin-right:7px; border-radius:2px; background:var(--shell-blue); }
+    .side-footer { position:sticky; bottom:0; display:flex; height:38px; align-items:center; justify-content:flex-end; padding-right:16px; color:#8795a6; background:#fff; }
+    .collapse-dot { display:grid; width:24px; height:24px; place-items:center; border-radius:5px; background:#f1f4f8; font-size:13px; }
+    /* 内容区占位块：1626×836，供 Figma 中与内容层拼合 */
+    .content { min-width:0; flex:1; background:#eaf0f7; }
+  </style>
+</head>
+<body>
+  <!--
+    Axhub 导出用「框架层」页面：仅保留顶部导航与左侧导航，已移除 iframe 与交互脚本。
+    画布固定 1830×900，内容区为 1626×836 纯色占位块，供在 Figma 中与内容层单独抓取后拼接。
+    本页为导出辅助页，请勿在 index.html 导航动线中引用。
+  -->
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">环</span><span>酷哇智慧环卫</span></div>
+    <nav class="product-nav" aria-label="产品导航">
+      <a class="product-link" href="#">信息管理</a><a class="product-link is-active" href="#" aria-current="page">实时管理</a><a class="product-link" href="#">作业制定</a><a class="product-link" href="#">智能水站</a><a class="product-link" href="#">垃圾分类</a><a class="product-link" href="#">数据分析</a><a class="product-link" href="#">城市治理</a>
+    </nav>
+    <div class="topbar-spacer"></div>
+    <button class="project-select" type="button" aria-label="当前项目"><span>上海市 / 上海市 / 上海浦东项目</span><span>⌄</span></button>
+    <button class="top-action" type="button" aria-label="返回">↶</button><button class="top-action" type="button" aria-label="账户">◯</button>
+    <div class="user-box"><span class="avatar">孙</span><span class="user-copy"><strong>孙继成</strong><small>产品经理</small></span><span class="user-caret">⌄</span></div>
+  </header>
+  <div class="layout">
+    <aside class="sidebar" aria-label="运营中心导航">
+      <section class="side-group"><div class="side-group-title"><span>运营管理</span></div><a class="side-link" href="#">监测一张图</a><a class="side-link" href="#">作业一张图</a></section>
+      <section class="side-group"><div class="side-group-title"><span>感知体系</span></div><a class="side-link" href="#">监控看板</a><a class="side-link" href="#">监控方案</a></section>
+      <section class="side-group"><div class="side-group-title"><span>处理体系</span></div><a class="side-link" href="#">任务调度</a><a class="side-link" href="#">任务列表</a><a class="side-link" href="#">规则配置</a></section>
+      <section class="side-group"><div class="side-group-title"><span>品质运营</span></div><a id="dispatchLink" class="side-link is-active" href="话务中心/话务中心工作台.html?embed=1" aria-current="page">运营调度</a><a id="recordLink" class="side-link" href="话务中心/后台任务明细.html?embed=1">调度记录</a></section>
+      <section class="side-group"><div class="side-group-title is-standalone"><span>监督考核</span></div></section>
+      <section class="side-group"><div class="side-group-title"><span>异常监控</span></div><a class="side-link" href="#">异常记录</a><a class="side-link" href="#">异常规则</a></section>
+      <div class="side-footer"><span class="collapse-dot">≡</span></div>
+    </aside>
+    <main class="content" aria-label="内容区占位"></main>
+  </div>
+</body>
+</html>
