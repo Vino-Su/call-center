@@ -1,0 +1,15 @@
+# ===== 本地过程文件（保留本地磁盘文件，不纳入版本控制 / 不上传 GitHub）=====
+
+# 备份目录：由 .claude/CLAUDE.md 备份机制生成，属本地留档，公开仓库无需暴露
+06-备份/
+
+# 自测临时产物：page-selftest 等 skill 输出的 dom.html / result.json / shot.png
+.codex_tmp/
+
+# ===== 个人本地配置 =====
+.claude/settings.local.json
+
+# ===== 系统临时文件 =====
+Thumbs.db
+Desktop.ini
+.DS_Store
