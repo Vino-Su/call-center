@@ -6,6 +6,9 @@
 # 自测临时产物：page-selftest 等 skill 输出的 dom.html / result.json / shot.png
 .codex_tmp/
 
+# 浏览器截图与页面验证留档
+07-bugs/
+
 # ===== 个人本地配置 =====
 .claude/settings.local.json
 
